@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        maven { url "https://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:0.3.1.RELEASE"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE"
+        classpath 'com.github.jacobono:gradle-jaxb-plugin:1.3.5'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'spring-boot'
+apply plugin: 'com.github.jacobono.jaxb'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility  = JavaVersion.VERSION_1_8
+
+mainClassName = "com.eleks.Application"
+
+jar {
+    baseName = 'teampro-rest-service'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.spring.io/libs-release" }
+}
+
+dependencyManagement {
+     imports {
+          mavenBom 'io.spring.platform:platform-bom:1.1.0.RELEASE'
+     }
+}
+
+dependencies {
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+	compile 'org.quartz-scheduler:quartz:2.2.1'
+	compile 'javax.mail:mail:1.4.1'
+ 	compile 'org.apache.james:apache-mime4j:0.7.2'
+ 	compile 'org.imgscalr:imgscalr-lib:4.2'
+ 	jaxb 'com.sun.xml.bind:jaxb-impl:2.2.11'
+ 	compile 'org.eclipse.persistence:eclipselink:2.5.1'
+  	compile 'org.apache.httpcomponents:httpclient:4.3.6'
+  	
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
