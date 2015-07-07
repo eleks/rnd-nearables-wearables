@@ -19,6 +19,12 @@ public class Constants {
 	
 	public static final UserCredentials DEFAULT_CREDENTIALS = new UserCredentials("bogdan.melnychuk", "<PASSWORD>");
 	
+	
+	public static final class MovementTrackingController {
+		public static final String MOVEMENT_SAVE_URL = "/track/save";
+		public static final String MOVEMENT_RECENT_URL = "/track/recent";
+	}
+	
 	public static final class TeamProControllerConstants {
 		public static final String MONTHLY_DATA_URL = "/monthly-data";
 		

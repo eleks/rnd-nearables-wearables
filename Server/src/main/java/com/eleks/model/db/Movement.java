@@ -9,10 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Movement {
 
-	enum MovementType {
+	public enum MovementType {
 		IN_RANGE, OUT_OF_RANGE
 	}
 
@@ -70,4 +72,10 @@ public class Movement {
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
+
+	@Override
+	public String toString() {
+		return "Movement [id=" + id + ", nearable=" + nearable + ", timestamp=" + timestamp + ", user=" + user + ", type=" + type + "]";
+	}
+
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.eleks.model.db.Nearable;
 
 @Repository
-public interface NearableRepository extends CrudRepository<Nearable, String>{
-
+public interface NearableRepository extends CrudRepository<Nearable, Long> {
+	Nearable findByUid(String uid);
 }

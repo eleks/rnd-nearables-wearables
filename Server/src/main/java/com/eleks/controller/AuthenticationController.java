@@ -39,12 +39,14 @@ public class AuthenticationController {
 		LOG.debug("Processing auth request for user " + userName);
 
 		try {
-			final String uuid = SessionUtils.getSessionIdFromCredentials(userName, password);
+			authService.validateCredentials(userName, password);
+			
 			User user = userService.getUserByName(userName);
+			final String uuid = SessionUtils.getSessionIdFromCredentials(userName, password);
+			
 			if (user != null) {
 				user.setAccessToken(uuid);
-			} else {
-				authService.validateCredentials(userName, password);
+			} else {				
 				user = new User(userName, uuid);
 			}
 
