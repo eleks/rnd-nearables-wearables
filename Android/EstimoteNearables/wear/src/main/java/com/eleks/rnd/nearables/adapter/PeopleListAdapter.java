@@ -11,6 +11,7 @@ import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.model.Person;
 import com.eleks.rnd.nearables.util.DateUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +21,22 @@ import java.util.concurrent.TimeUnit;
  * Created by bogdan.melnychuk on 09.07.2015.
  */
 public class PeopleListAdapter extends WearableListView.Adapter {
-    private final Context context;
-    private final List<Person> items;
+    private Context context;
+    private List<Person> items;
 
     public PeopleListAdapter(Context context, List<Person> items) {
         this.context = context;
         this.items = items;
     }
 
+    public PeopleListAdapter(Context context) {
+        this(context, new ArrayList<Person>());
+    }
+
+    public void setData(List<Person> people) {
+        this.items = people;
+        notifyDataSetChanged();
+    }
 
     @Override
     public WearableListView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
