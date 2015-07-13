@@ -17,7 +17,7 @@ public class Constants {
 	
 	public static final String SESSION_ID_HEADER_PARRAM = "sessionId";
 	
-	public static final UserCredentials DEFAULT_CREDENTIALS = new UserCredentials("bogdan.melnychuk", "<PASSWORD>");
+	public static final UserCredentials DEFAULT_CREDENTIALS = new UserCredentials("bogdan.melnychuk", "<YOUR_PASS>");
 	
 	
 	public static final class MovementTrackingController {

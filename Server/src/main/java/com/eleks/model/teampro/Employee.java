@@ -18,8 +18,6 @@ import static com.eleks.utils.Constants.EmployeeConstants.OFFICE;
 import static com.eleks.utils.Constants.EmployeeConstants.SKYPE;
 import static com.eleks.utils.Constants.EmployeeConstants.LOGIN;
 
-import java.time.LocalDate;
-
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,64 +27,64 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
+import org.joda.time.LocalDate;
+
 import com.eleks.converter.LocalDateConverter;
 import com.eleks.utils.json.LocalDateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
-@Table(indexes = {
-		@Index(name="email_index", columnList = "email")
-})
+@Table(indexes = { @Index(name = "email_index", columnList = "email") })
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Employee {
 
 	@Id
 	@XmlAttribute(name = ID)
 	private long id;
-	
+
 	private String login;
-	
+
 	@XmlAttribute(name = FULL_NAME)
 	private String fullName;
-	
+
 	@XmlAttribute(name = DEPARTMENT)
 	private String department;
-	
+
 	@XmlAttribute(name = LEVEL_1)
 	private String level1;
-	
+
 	@XmlAttribute(name = LEVEL_2)
 	private String level2;
-	
+
 	@XmlAttribute(name = KIND_1)
 	private String kind1;
-	
+
 	@XmlAttribute(name = KIND_2)
 	private String kind2;
-	
+
 	@XmlAttribute(name = EMAIL)
 	private String email;
-	
+
 	@XmlAttribute(name = INV_POSITION)
 	private String involvementPosition;
 
 	@XmlAttribute(name = INV_PROJECT_PATH)
 	private String involvementProjectPath;
-	
+
 	@XmlAttribute(name = INV_SUPERIOR)
 	private String involvementSuperior;
-	
+
 	@XmlAttribute(name = DIVISION)
 	private String division;
-	
+
 	@XmlAttribute(name = JOB_TITLE)
 	private String jobTitle;
-	
+
 	@XmlAttribute(name = JOB_TITLE_AREA)
 	private String jobTitleArea;
-	
+
 	private String skype;
-	
+
 	@XmlAttribute(name = OFFICE)
 	private String office;
 
@@ -95,11 +93,11 @@ public class Employee {
 	private String carModel;
 	private String carNumber;
 	private String sex;
-	
+
 	@Convert(converter = LocalDateConverter.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate birthday;
-	
+
 	public long getId() {
 		return id;
 	}
@@ -107,18 +105,17 @@ public class Employee {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public String getLogin() {
 		return login;
 	}
 
 	@XmlAttribute(name = LOGIN)
 	private void setLoginFromXml(String login) {
-		String[] parts = login.split("\\\\"); 
+		String[] parts = login.split("\\\\");
 		this.login = parts[parts.length > 1 ? 1 : 0];
 	}
-	
-	
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
@@ -165,7 +162,7 @@ public class Employee {
 		final int end = skype.indexOf("?");
 		this.skype = skype.substring(start != -1 ? start + 1 : 0, end != -1 ? end : 0);
 	}
-	
+
 	public void setSkype(String skype) {
 		this.skype = skype;
 	}
@@ -287,7 +284,7 @@ public class Employee {
 	}
 
 	public void setBirthday(int day, int month) {
-		this.birthday = LocalDate.of(1900, month, day);
+		this.birthday = new LocalDate(1900, month, day);
 	}
 
 	public String getSex() {
@@ -297,5 +294,5 @@ public class Employee {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	
+
 }

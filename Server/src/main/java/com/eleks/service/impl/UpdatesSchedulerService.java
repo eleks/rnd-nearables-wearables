@@ -19,8 +19,8 @@ public class UpdatesSchedulerService {
 	
 	@PostConstruct
 	public void init() {
-		//final List<Employee> employees = employeesService.getEmployeesFromTeamProServer();
-		//employeesService.saveEmployees(employees);
+		final List<Employee> employees = employeesService.getEmployeesFromTeamProServer();
+		employeesService.saveEmployees(employees);
 	}
 	
 	@Scheduled(cron = "0 0 0 * * *") // everyday at midnight

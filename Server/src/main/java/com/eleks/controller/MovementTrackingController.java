@@ -1,7 +1,7 @@
 package com.eleks.controller;
 
-import static com.eleks.utils.Constants.MovementTrackingController.MOVEMENT_SAVE_URL;
 import static com.eleks.utils.Constants.MovementTrackingController.MOVEMENT_RECENT_URL;
+import static com.eleks.utils.Constants.MovementTrackingController.MOVEMENT_SAVE_URL;
 
 import java.util.List;
 
@@ -25,7 +25,9 @@ import com.eleks.model.db.User;
 import com.eleks.service.MovementTrackingService;
 import com.eleks.service.NearableService;
 import com.eleks.service.UserService;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
 public class MovementTrackingController {
@@ -41,7 +43,7 @@ public class MovementTrackingController {
 	private MovementTrackingService movesService;
 
 	@RequestMapping(value = MOVEMENT_SAVE_URL, method = RequestMethod.POST)
-	public Movement saveMovement(@RequestHeader(value = "access_token") String accessToken,
+	public void saveMovement(@RequestHeader(value = "access_token") String accessToken,
 			@RequestHeader(value = "user_name") String userName, @RequestBody MovementParam movementParam)
 			throws InvalidAttributeValueException {
 		User user = userService.getUserByName(userName);
@@ -66,19 +68,29 @@ public class MovementTrackingController {
 		System.out.println(movement);
 
 		movesService.saveMovement(movement);
-
-		return movement;
+		//return movement;
 	}
 
 	@RequestMapping(value = MOVEMENT_RECENT_URL, method = RequestMethod.GET)
-	public List<Movement> getRecent(@RequestHeader(value = "access_token") String accessToken,
+	public ArrayNode getRecent(@RequestHeader(value = "access_token") String accessToken,
 			@RequestHeader(value = "user_name") String userName) throws InvalidAttributeValueException {
 		User user = userService.getUserByName(userName);
 		if (user == null || !accessToken.equals(user.getAccessToken())) {
 			throw new UnauthorizedException("Access token is not valid");
 		}
-
 		List<Movement> result = movesService.getRecent();
-		return result;
+		final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+		ArrayNode arrayNode = nodeFactory.arrayNode();
+		for(Movement m : result) {			
+			ObjectNode child = arrayNode.objectNode(); // the child
+			child.put("employeeId", m.getUser().getEmployee().getId());
+			child.put("stickerUuid", m.getNearable().getUid());
+			child.put("location", m.getNearable().getName());
+			child.put("timestamp", m.getTimestamp());
+			
+			arrayNode.add(child);
+		}
+		
+		return arrayNode;
 	}
 }

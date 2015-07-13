@@ -1,12 +1,16 @@
 package com.eleks.model.db;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.eleks.model.teampro.Employee;
 
 @Entity
 @Table(name = "Users", indexes = { @Index(name = "user_name_index", columnList = "userName") })
@@ -21,6 +25,9 @@ public class User {
 
 	@Column(nullable = false)
 	private String accessToken;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Employee employee;
 
 	protected User() {
 	}
@@ -52,6 +59,14 @@ public class User {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	@Override

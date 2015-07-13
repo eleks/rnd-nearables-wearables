@@ -25,7 +25,7 @@ public class MovementTrackingServiceImpl implements MovementTrackingService {
 	}
 
 	public List<Movement> getRecent() {
-		return makeCollection(movementRepository.findAll());
+		return makeCollection(movementRepository.findAllOrderByTimestampDesc());
 	}
 
 	public List<Movement> getHistoryFor(User user) {

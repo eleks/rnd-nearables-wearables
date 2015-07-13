@@ -1,16 +1,17 @@
 package com.eleks.converter;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 import javax.persistence.AttributeConverter;
+
+import org.joda.time.LocalDate;
 
 public class LocalDateConverter implements AttributeConverter<LocalDate, Date>{
 
 	@Override
 	public Date convertToDatabaseColumn(LocalDate localDate) {
 		if(localDate != null) {
-			return Date.valueOf(localDate);
+			return new Date(localDate.toDate().getTime());
 		}
 		
 		return null;
@@ -19,7 +20,7 @@ public class LocalDateConverter implements AttributeConverter<LocalDate, Date>{
 	@Override
 	public LocalDate convertToEntityAttribute(Date date) {
 		if(date != null) {
-			return date.toLocalDate();
+			return new LocalDate(date.getTime());
 		}
 		
 		return null;

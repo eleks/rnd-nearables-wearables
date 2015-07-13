@@ -8,4 +8,6 @@ import com.eleks.model.teampro.Employee;
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 	Employee findByEmail(String email);
+
+	Employee findByLogin(String login);
 }
