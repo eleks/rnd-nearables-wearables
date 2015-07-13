@@ -53,9 +53,7 @@ public class MovementTrackingController {
 
 		Nearable n = nearableService.getByUid(movementParam.getStikerId());
 		if (n == null) {
-			n = new Nearable();
-			n.setName("UNKNOWN");
-			n.setUid(movementParam.getStikerId());
+			n = new Nearable.Builder().withUuid(movementParam.getStikerId()).build();
 			// throw new InvalidAttributeValueException("Unknown sticker uid");
 		}
 
@@ -87,6 +85,7 @@ public class MovementTrackingController {
 			child.put("stickerUuid", m.getNearable().getUid());
 			child.put("location", m.getNearable().getName());
 			child.put("timestamp", m.getTimestamp());
+			child.put("employeeName", m.getUser().getEmployee().getFullName());
 			
 			arrayNode.add(child);
 		}
