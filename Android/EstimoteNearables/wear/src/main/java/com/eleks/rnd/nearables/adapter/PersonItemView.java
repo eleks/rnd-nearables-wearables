@@ -1,7 +1,6 @@
 package com.eleks.rnd.nearables.adapter;
 
 import android.content.Context;
-import android.support.wearable.view.CircledImageView;
 import android.support.wearable.view.WearableListView;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -9,12 +8,14 @@ import android.widget.TextView;
 
 import com.eleks.rnd.nearables.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by bogdan.melnychuk on 09.07.2015.
  */
 public final class PersonItemView extends RelativeLayout implements WearableListView.OnCenterProximityListener {
 
-    final CircledImageView imgView;
+    final CircleImageView imgView;
     final TextView txtViewName;
     final TextView txtViewLocation;
     final TextView txtViewTime;
@@ -23,7 +24,7 @@ public final class PersonItemView extends RelativeLayout implements WearableList
     public PersonItemView(Context context) {
         super(context);
         View.inflate(context, R.layout.layout_item_person, this);
-        imgView = (CircledImageView) findViewById(R.id.image);
+        imgView = (CircleImageView) findViewById(R.id.image);
         parent = (View) imgView.getParent();
         txtViewName = (TextView) findViewById(R.id.name);
         txtViewLocation = (TextView) findViewById(R.id.location);

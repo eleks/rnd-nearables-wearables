@@ -11,10 +11,9 @@ import android.util.Log;
 
 import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.adapter.PeopleListAdapter;
-import com.eleks.rnd.nearables.model.Person;
+import com.eleks.rnd.nearables.model.Movement;
+import com.eleks.rnd.nearables.service.HttpService;
 import com.eleks.rnd.nearables.service.NearablesService;
-import com.estimote.sdk.BeaconManager;
-import com.estimote.sdk.Nearable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -22,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -31,8 +28,6 @@ public class MainActivity extends Activity {
 
     private WearableListView mListView;
     private PeopleListAdapter mAdapter;
-
-    private BeaconManager beaconManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +45,6 @@ public class MainActivity extends Activity {
                 mListView = (WearableListView) stub.findViewById(R.id.listView);
                 loader.execute();
                 mListView.setAdapter(mAdapter);
-                beaconManager = new BeaconManager(MainActivity.this);
-                //connectToService();
             }
         });
 
@@ -59,43 +52,14 @@ public class MainActivity extends Activity {
         startService(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "Stopping nearables service...");
-        beaconManager.disconnect();
-        super.onDestroy();
-    }
-
-    private void connectToService() {
-        beaconManager.setNearableListener(new BeaconManager.NearableListener() {
-            @Override
-            public void onNearablesDiscovered(List<Nearable> nearables) {
-                Log.d(TAG, "Nearables discovered");
-                for (Nearable n : nearables) {
-                    Log.d(TAG, "Nearable " + n);
-                }
-            }
-        });
-
-        beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                Log.d(TAG, "Nerables service ready");
-                beaconManager.startNearableDiscovery();
-            }
-        });
-    }
-
     private AsyncTask<Void, Void, Void> loader = new AsyncTask<Void, Void, Void>() {
         private Exception e;
-        private List<Person> people;
+        private List<Movement> movements;
 
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Type itemsListType = new TypeToken<List<Person>>() {}.getType();
-                InputStream is = getAssets().open("input.json");
-                people = new Gson().fromJson(new InputStreamReader(is), itemsListType);
+                movements = HttpService.getRecentEvents();
             } catch (IOException e) {
                 this.e = e;
             }
@@ -106,37 +70,8 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (e == null) {
-                mAdapter.setData(people);
+                mAdapter.setData(movements);
             }
         }
     };
-
-    private List<Person> getMates() {
-        List<Person> result = new ArrayList<>();
-        Person me = new Person();
-        me.setName("Bogdan Melnychuk");
-        me.setLocation("@Kitchen");
-        me.setLastActivity(new Date().getTime());
-
-        Person olya = new Person();
-        olya.setName("Olha Stadnytska");
-        olya.setLocation("@514");
-        olya.setLastActivity(new Date().getTime() - 8000 * 60);
-
-        Person iryna = new Person();
-        iryna.setName("Iryna Pantel");
-        iryna.setLocation("@510");
-        iryna.setLastActivity(new Date().getTime());
-
-        Person b = new Person();
-        b.setName("Bogdan Shubravyj");
-        b.setLocation("@Gym");
-        b.setLastActivity(new Date().getTime());
-
-        result.add(me);
-        result.add(olya);
-        result.add(iryna);
-        result.add(b);
-        return result;
-    }
 }

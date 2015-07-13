@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Nearable;
+import com.estimote.sdk.Region;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,15 +54,10 @@ public class NearablesService extends Service {
                 Log.d("TAG", "Discovered " + (nearables == null ? "0" : "" + nearables.size()));
                 if (nearables != null) {
                     for (Nearable n : nearables) {
-                        if (justDicovered(n)) {
-                            Log.d("TAG", "Just discovered " + n.identifier);
+                        if (recentOnes == null || !recentOnes.contains(n)) {
+                            Log.d("TAG", "Sending details " + n.identifier);
+                            sendNearablesDetails(n);
                         }
-                    }
-                }
-                List<Nearable> outRanged = getOutRanged(nearables);
-                if (outRanged != null) {
-                    for (Nearable n : outRanged) {
-                        Log.d("TAG", "Out of range " + n.identifier);
                     }
                 }
                 recentOnes = nearables;
@@ -71,6 +71,14 @@ public class NearablesService extends Service {
                 beaconManager.startNearableDiscovery();
             }
         });
+    }
+
+    private void sendNearablesDetails(final Nearable n) {
+        //"timestamp": 12223,
+        //"type": "IN_RANGE",
+        //"stikerId": "7161b96ea10bd9eb6egfg929e1aa09d5230"
+        HttpService.postNearableData(n);
+
     }
 
     private boolean justDicovered(Nearable n) {

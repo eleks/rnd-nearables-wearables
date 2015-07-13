@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.wearable.view.CircledImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="16dp"
-        android:alpha="0.5"
-        app:circle_border_color="#FFFFFFFF"
-        app:circle_border_width="2dp"
-        app:circle_color="@android:color/holo_blue_dark" />
-
+        android:layout_marginRight="16dp"
+        android:alpha="0.5" />
 
     <RelativeLayout
-        android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/image"
+        android:layout_alignTop="@+id/image"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/image">
 
         <TextView
@@ -44,11 +42,11 @@
             android:textSize="14sp" />
 
         <TextView
-            android:layout_marginLeft="8dp"
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
+            android:layout_marginLeft="8dp"
             android:layout_toRightOf="@id/location"
             android:alpha="0.5"
             android:fontFamily="sans-serif-condensed-light"
