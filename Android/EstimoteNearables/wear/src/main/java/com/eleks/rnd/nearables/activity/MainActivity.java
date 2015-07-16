@@ -14,6 +14,7 @@ import com.eleks.rnd.nearables.adapter.PeopleListAdapter;
 import com.eleks.rnd.nearables.model.Movement;
 import com.eleks.rnd.nearables.service.HttpService;
 import com.eleks.rnd.nearables.service.NearablesService;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,7 +25,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    public static final String TAG = "EleksNearables";
+    public static final String TAG = "TAG";
 
     private WearableListView mListView;
     private PeopleListAdapter mAdapter;
@@ -35,6 +36,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_listview);
 
         Log.d(TAG, "MainActivity onCreate");
+
+        Log.d(TAG, "UserName " + PreferencesManager.getUserName(this));
+        Log.d(TAG, "Token " + PreferencesManager.getAccessToken(this));
 
         mAdapter = new PeopleListAdapter(this);
 
@@ -59,7 +63,7 @@ public class MainActivity extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                movements = HttpService.getRecentEvents();
+                movements = HttpService.getRecentEvents(MainActivity.this);
             } catch (IOException e) {
                 this.e = e;
             }

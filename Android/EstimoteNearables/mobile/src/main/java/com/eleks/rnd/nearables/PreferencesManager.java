@@ -1,4 +1,4 @@
-package com.eleks.rnd.nearables.util;
+package com.eleks.rnd.nearables;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,13 +9,6 @@ import android.text.TextUtils;
  * Created by bogdan.melnychuk on 13.07.2015.
  */
 public class PreferencesManager {
-//    public static String getUserName() {
-//        return "bogdan.melnychuk";
-//    }
-//
-//    public static String accessToken() {
-//        return "7161b96ea10bd9eb6e929e1aa09d5230";
-//    }
 
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -39,7 +32,6 @@ public class PreferencesManager {
     }
 
     public static String getUserName(Context context) {
-        //return "bogdan.melnychuk";
         return getString(context, "userName", null);
     }
 
@@ -48,7 +40,6 @@ public class PreferencesManager {
     }
 
     public static String getAccessToken(Context context) {
-        //return "7161b96ea10bd9eb6e929e1aa09d5230";
         return getString(context, "accesToken", null);
     }
 
@@ -64,4 +55,5 @@ public class PreferencesManager {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.clear().commit();
     }
+
 }

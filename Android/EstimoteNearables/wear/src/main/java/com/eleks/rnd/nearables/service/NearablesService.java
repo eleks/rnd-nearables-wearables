@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Nearable;
@@ -22,7 +23,7 @@ import java.util.List;
 public class NearablesService extends Service {
 
     private BeaconManager beaconManager;
-    private List<Nearable> recentOnes;
+    public static List<Nearable> recentOnes;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,10 +52,11 @@ public class NearablesService extends Service {
         beaconManager.setNearableListener(new BeaconManager.NearableListener() {
             @Override
             public void onNearablesDiscovered(List<Nearable> nearables) {
-                Log.d("TAG", "Discovered " + (nearables == null ? "0" : "" + nearables.size()));
+                //Log.d("TAG", "Discovered " + (nearables == null ? "0" : "" + nearables.size()));
                 if (nearables != null) {
                     for (Nearable n : nearables) {
                         if (recentOnes == null || !recentOnes.contains(n)) {
+                            Log.d("TAG", "User " + PreferencesManager.getUserName(getApplicationContext()));
                             Log.d("TAG", "Sending details " + n.identifier);
                             sendNearablesDetails(n);
                         }
@@ -77,7 +79,7 @@ public class NearablesService extends Service {
         //"timestamp": 12223,
         //"type": "IN_RANGE",
         //"stikerId": "7161b96ea10bd9eb6egfg929e1aa09d5230"
-        HttpService.postNearableData(n);
+        HttpService.postNearableData(n, getApplicationContext());
 
     }
 

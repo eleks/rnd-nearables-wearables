@@ -1,5 +1,6 @@
 package com.eleks.rnd.nearables.service;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -45,17 +46,17 @@ public class HttpService {
         return SERVER + "/employee/" + empId + "/photo";
     }
 
-    private static Request.Builder getDefaultRequest(String path) {
+    private static Request.Builder getDefaultRequest(String path, Context context) {
         return new Request.Builder()
                 .url(path)
-                .addHeader("user_name", PreferencesManager.getUserName())
-                .addHeader("access_token", PreferencesManager.accessToken());
+                .addHeader("user_name", PreferencesManager.getUserName(context))
+                .addHeader("access_token", PreferencesManager.getAccessToken(context));
 
     }
 
-    public static List<Movement> getRecentEvents() throws IOException {
+    public static List<Movement> getRecentEvents(Context context) throws IOException {
         final OkHttpClient client = new OkHttpClient();
-        Request request = getDefaultRequest(RECENT).build();
+        Request request = getDefaultRequest(RECENT, context).build();
         Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
@@ -65,7 +66,7 @@ public class HttpService {
         return movements;
     }
 
-    public static void postNearableData(Nearable n) {
+    public static void postNearableData(Nearable n, Context context) {
         JsonObject jsObj = new JsonObject();
         jsObj.addProperty("timestamp", new Date().getTime());
         jsObj.addProperty("type", "IN_RANGE");
@@ -75,7 +76,7 @@ public class HttpService {
 
         final OkHttpClient client = new OkHttpClient();
         RequestBody reqBody = RequestBody.create(JSON, body);
-        Request request = getDefaultRequest(SAVE).post(reqBody).build();
+        Request request = getDefaultRequest(SAVE, context).post(reqBody).build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override

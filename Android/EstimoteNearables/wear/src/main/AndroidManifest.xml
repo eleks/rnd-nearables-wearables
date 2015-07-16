@@ -30,6 +30,11 @@
         <service
             android:name=".service.NearablesService"
             android:label="NearablesService" />
+        <service android:name=".service.WearMessageListenerService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+            </intent-filter>
+        </service>
         <receiver
             android:name=".service.receiver.PowerBroadcastReceiver"
             android:enabled="true"
