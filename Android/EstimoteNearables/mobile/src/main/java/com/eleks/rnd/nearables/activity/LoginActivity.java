@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             if (e == null) {
                 PreferencesManager.putAccessToken(LoginActivity.this, response.getAccessToken());
                 PreferencesManager.putUserName(LoginActivity.this, response.getUserName());
-                goToDashboars();
+                goToDashboard();
             } else {
                 Toast.makeText(LoginActivity.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         if (PreferencesManager.isLoggedIn(this)) {
-            goToDashboars();
+            goToDashboard();
         }
 
         login = (EditText) findViewById(R.id.login);
@@ -80,13 +80,14 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginAsync async = new LoginAsync();
-                async.execute();
+                //LoginAsync async = new LoginAsync();
+                //async.execute();
+                goToDashboard();
             }
         });
     }
 
-    private void goToDashboars() {
+    private void goToDashboard() {
         Intent myIntent = new Intent(this, MainActivity.class);
         startActivity(myIntent);
         finish();

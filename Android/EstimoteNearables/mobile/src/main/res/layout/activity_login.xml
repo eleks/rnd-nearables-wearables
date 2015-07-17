@@ -43,7 +43,6 @@
                 android:background="@android:color/transparent"
                 android:hint="username"
                 android:padding="@dimen/spacing_small"
-                android:text="bogdan.melnychuk"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/text_secondary" />
 
@@ -77,7 +76,6 @@
                 android:hint="password"
                 android:inputType="textPassword"
                 android:padding="@dimen/spacing_small"
-                android:text="April123#@!"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/text_secondary" />
         </LinearLayout>

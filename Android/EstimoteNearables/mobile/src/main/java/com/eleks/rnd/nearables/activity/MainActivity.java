@@ -1,8 +1,11 @@
 package com.eleks.rnd.nearables.activity;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import com.eleks.rnd.nearables.PreferencesManager;
 import com.eleks.rnd.nearables.R;
+import com.eleks.rnd.nearables.fragment.MatesFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -28,22 +32,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        TextView message = (TextView) findViewById(R.id.message);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
-        Button logout = (Button) findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PreferencesManager.clear(MainActivity.this);
-                Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(myIntent);
-                MainActivity.this.finish();
-            }
-        });
+        Fragment f = new MatesFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, f, MatesFragment.class.getName()).commit();
 
-        message.setText("Hello " + PreferencesManager.getUserName(this));
-        initGoogleApiClient();
+//        TextView message = (TextView) findViewById(R.id.message);
+//
+//        Button logout = (Button) findViewById(R.id.logout);
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                PreferencesManager.clear(MainActivity.this);
+//                Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+//                startActivity(myIntent);
+//                MainActivity.this.finish();
+//            }
+//        });
+//
+//        message.setText("Hello " + PreferencesManager.getUserName(this));
+//        initGoogleApiClient();
     }
 
     private void initGoogleApiClient() {
