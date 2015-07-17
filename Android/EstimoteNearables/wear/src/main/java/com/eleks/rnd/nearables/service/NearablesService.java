@@ -5,22 +5,23 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.eleks.rnd.nearables.event.NearableDiscoveredEvent;
 import com.eleks.rnd.nearables.util.PreferencesManager;
-import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Nearable;
-import com.estimote.sdk.Region;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Bogdan.Melnychuk on 25.06.2015.
  */
 public class NearablesService extends Service {
+
+    private static final String TAG = "NearablesService";
 
     private BeaconManager beaconManager;
     public static List<Nearable> recentOnes;
@@ -43,7 +44,7 @@ public class NearablesService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("TAG", "On Start Command");
+        Log.d(TAG, "On Start Command");
         connectToService();
         return START_STICKY;
     }
@@ -56,12 +57,15 @@ public class NearablesService extends Service {
                 if (nearables != null) {
                     for (Nearable n : nearables) {
                         if (recentOnes == null || !recentOnes.contains(n)) {
-                            Log.d("TAG", "User " + PreferencesManager.getUserName(getApplicationContext()));
-                            Log.d("TAG", "Sending details " + n.identifier);
+                            PreferencesManager.putLastLocation(getApplicationContext(), n.identifier);
+                            PreferencesManager.putLastLocationDate(getApplicationContext(), new Date().getTime());
+                            Log.d(TAG, "User " + PreferencesManager.getUserName(getApplicationContext()));
+                            Log.d(TAG, "Sending details " + n.identifier);
                             sendNearablesDetails(n);
                         }
                     }
                 }
+                EventBus.getDefault().post(new NearableDiscoveredEvent(nearables));
                 recentOnes = nearables;
             }
         });
@@ -69,16 +73,13 @@ public class NearablesService extends Service {
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
             public void onServiceReady() {
-                Log.d("TAG", "Service ready");
+                Log.d(TAG, "Service ready");
                 beaconManager.startNearableDiscovery();
             }
         });
     }
 
     private void sendNearablesDetails(final Nearable n) {
-        //"timestamp": 12223,
-        //"type": "IN_RANGE",
-        //"stikerId": "7161b96ea10bd9eb6egfg929e1aa09d5230"
         HttpService.postNearableData(n, getApplicationContext());
 
     }

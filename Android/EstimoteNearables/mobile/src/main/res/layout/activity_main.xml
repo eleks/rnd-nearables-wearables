@@ -6,27 +6,19 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    android:background="@color/background_main"
+    tools:context="com.eleks.rnd.nearables.activity.MainActivity">
 
-    <EditText
-        android:text="bogdan.melnychuk"
-        android:id="@+id/login"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:text="April123#@!"
-        android:inputType="textPassword"
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login" />
-
     <Button
-        android:id="@+id/signin"
+        android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
-        android:text="Sign In" />
+        android:layout_below="@+id/message"
+        android:text="LogOut" />
 
 </RelativeLayout>

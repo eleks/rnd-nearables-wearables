@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.eleks.rnd.nearables.event.SendingEvent;
 import com.eleks.rnd.nearables.model.Movement;
 import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.estimote.sdk.Nearable;
@@ -31,6 +32,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by bogdan.melnychuk on 13.07.2015.
@@ -66,7 +69,7 @@ public class HttpService {
         return movements;
     }
 
-    public static void postNearableData(Nearable n, Context context) {
+    public static void postNearableData(final Nearable n, Context context) {
         JsonObject jsObj = new JsonObject();
         jsObj.addProperty("timestamp", new Date().getTime());
         jsObj.addProperty("type", "IN_RANGE");
@@ -81,12 +84,12 @@ public class HttpService {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Log.d("TAG", " Event was not saved");
+                EventBus.getDefault().post(new SendingEvent(e, n));
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-                Log.d("TAG", "Event saved");
+                EventBus.getDefault().post(new SendingEvent(n));
             }
         });
         //if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);

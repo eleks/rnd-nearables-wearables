@@ -1,5 +1,6 @@
-package com.eleks.rnd.nearables;
+package com.eleks.rnd.nearables.service;
 
+import com.eleks.rnd.nearables.AuthResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.FormEncodingBuilder;

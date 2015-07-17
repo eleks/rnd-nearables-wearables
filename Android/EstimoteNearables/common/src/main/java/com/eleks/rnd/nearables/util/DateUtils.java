@@ -41,4 +41,23 @@ public class DateUtils {
         }
         return result;
     }
+
+    public static String getDateDiffMessage(Date prevDate) {
+        Map<TimeUnit, Long> timeDiff = DateUtils.computeDiff(prevDate, new Date());
+        StringBuilder s = new StringBuilder();
+        long hrs = timeDiff.get(TimeUnit.HOURS);
+        if (hrs > 0) {
+            s.append(timeDiff.get(TimeUnit.HOURS));
+            s.append(" hrs, ");
+        }
+        long min = timeDiff.get(TimeUnit.MINUTES);
+        if (min > 0) {
+            s.append(timeDiff.get(TimeUnit.MINUTES));
+            s.append(" min ago");
+        }
+        if (s.length() == 0) {
+            s.append("Just Now");
+        }
+        return s.toString();
+    }
 }

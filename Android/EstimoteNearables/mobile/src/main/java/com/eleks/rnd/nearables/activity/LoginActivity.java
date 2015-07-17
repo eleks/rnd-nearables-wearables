@@ -1,9 +1,9 @@
-package com.eleks.rnd.nearables;
+package com.eleks.rnd.nearables.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,11 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.eleks.rnd.nearables.AuthResponse;
+import com.eleks.rnd.nearables.service.HttpService;
+import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.R;
+
 import java.io.IOException;
-import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText login;
     private EditText password;
@@ -48,11 +52,11 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (e == null) {
-                PreferencesManager.putAccessToken(MainActivity.this, response.getAccessToken());
-                PreferencesManager.putUserName(MainActivity.this, response.getUserName());
+                PreferencesManager.putAccessToken(LoginActivity.this, response.getAccessToken());
+                PreferencesManager.putUserName(LoginActivity.this, response.getUserName());
                 goToDashboars();
             } else {
-                Toast.makeText(MainActivity.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             signIn.setEnabled(true);
         }
@@ -63,7 +67,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         if (PreferencesManager.isLoggedIn(this)) {
             goToDashboars();
@@ -83,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void goToDashboars() {
-        Intent myIntent = new Intent(this, LoginActivity.class);
+        Intent myIntent = new Intent(this, MainActivity.class);
         startActivity(myIntent);
         finish();
     }
