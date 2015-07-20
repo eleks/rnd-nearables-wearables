@@ -1,10 +1,6 @@
 package com.eleks.rnd.nearables.fragment;
 
 
-import com.eleks.rnd.nearables.R;
-import com.tonicartos.superslim.GridSLM;
-import com.tonicartos.superslim.LinearSLM;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,18 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eleks.rnd.nearables.R;
+import com.eleks.rnd.nearables.model.Person;
+import com.tonicartos.superslim.GridSLM;
+import com.tonicartos.superslim.LinearSLM;
+
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- *
- */
-public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder> {
-
+public class MatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_HEADER = 0x01;
-
     private static final int VIEW_TYPE_CONTENT = 0x00;
 
-    private static final int LINEAR = 0;
 
     private final ArrayList<LineItem> mItems;
 
@@ -33,10 +29,10 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
 
     private final Context mContext;
 
-    public CountryNamesAdapter(Context context, int headerMode) {
+    public MatesAdapter(Context context, int headerMode) {
         mContext = context;
 
-        final String[] countryNames = context.getResources().getStringArray(R.array.country_names);
+        final List<Person> people = Person.getPersons();
         mHeaderDisplay = headerMode;
 
         mItems = new ArrayList<>();
@@ -46,47 +42,51 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
         int sectionManager = -1;
         int headerCount = 0;
         int sectionFirstPosition = 0;
-        for (int i = 0; i < countryNames.length; i++) {
-            String header = countryNames[i].substring(0, 1);
+        for (int i = 0; i < people.size(); i++) {
+            Person p = people.get(i);
+            String header;
+            if (p.isFavorite()) {
+                header = "*";
+            } else {
+                header = people.get(i).getName().substring(0, 1);
+            }
+
             if (!TextUtils.equals(lastHeader, header)) {
                 // Insert new header view and update section data.
                 sectionManager = (sectionManager + 1) % 2;
                 sectionFirstPosition = i + headerCount;
                 lastHeader = header;
                 headerCount += 1;
-                mItems.add(new LineItem(header, true, 0, sectionFirstPosition));
+                mItems.add(new LineItem(header, true, sectionFirstPosition));
             }
-            mItems.add(new LineItem(countryNames[i], false, 0, sectionFirstPosition));
+            mItems.add(new LineItem(people.get(i), false, sectionFirstPosition));
         }
-    }
-
-    public boolean isItemHeader(int position) {
-        return mItems.get(position).isHeader;
-    }
-
-    public String itemToString(int position) {
-        return mItems.get(position).text;
+        setMarginsFixed(true);
     }
 
     @Override
-    public CountryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (viewType == VIEW_TYPE_HEADER) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.layout_header_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_header_item, parent, false);
+            return new LabelViewHolder(view);
         } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.layout_text_line_item, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_person, parent, false);
+            return new PersonViewHolder(view);
         }
-        return new CountryViewHolder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(CountryViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder  holder, int position) {
         final LineItem item = mItems.get(position);
         final View itemView = holder.itemView;
 
-        holder.bindItem(item.text);
+        if(holder instanceof PersonViewHolder) {
+            ((PersonViewHolder)holder).bindItem((Person) item.data);
+        } else {
+            ((LabelViewHolder)holder).bindItem(item.data.toString());
+        }
 
         final GridSLM.LayoutParams lp = GridSLM.LayoutParams.from(itemView.getLayoutParams());
         // Overrides xml attrs, could use different layouts too.
@@ -101,7 +101,7 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
             lp.headerEndMarginIsAuto = !mMarginsFixed;
             lp.headerStartMarginIsAuto = !mMarginsFixed;
         }
-        lp.setSlm(item.sectionManager == LINEAR ? LinearSLM.ID : GridSLM.ID);
+        lp.setSlm(LinearSLM.ID);
         lp.setColumnWidth(mContext.getResources().getDimensionPixelSize(R.dimen.grid_column_width));
         lp.setFirstPosition(item.sectionFirstPosition);
         itemView.setLayoutParams(lp);
@@ -137,20 +137,13 @@ public class CountryNamesAdapter extends RecyclerView.Adapter<CountryViewHolder>
     }
 
     private static class LineItem {
-
-        public int sectionManager;
-
         public int sectionFirstPosition;
-
         public boolean isHeader;
+        public Object data;
 
-        public String text;
-
-        public LineItem(String text, boolean isHeader, int sectionManager,
-                        int sectionFirstPosition) {
+        public LineItem(Object data, boolean isHeader, int sectionFirstPosition) {
             this.isHeader = isHeader;
-            this.text = text;
-            this.sectionManager = sectionManager;
+            this.data = data;
             this.sectionFirstPosition = sectionFirstPosition;
         }
     }

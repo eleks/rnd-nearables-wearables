@@ -3,7 +3,7 @@
     <color name="primary">#242539</color>
     <color name="primary_dark">#2A2B40</color>
     <color name="primary_light">#3777C1</color>
-    <color name="accent">#FF4081</color>
+    <color name="accent">#30A5D8</color>
     <color name="accent_light">#FF80AB</color>
     <color name="background_main">#1F1E30</color>
     <color name="icon_active">#757575</color>
@@ -15,4 +15,9 @@
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#727272</color>
     <color name="text_disabled">#B8B8B8</color>
+
+    <color name="bg_main">#1e1e1e</color>
+    <color name="font_name">#ffffff</color>
+    <color name="font_location">#34bcf5</color>
+    <color name="font_time">#ff9800</color>
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/text"
@@ -9,9 +8,10 @@
     android:gravity="start"
     android:layoutDirection="locale"
     android:padding="16dip"
+    android:textColor="@android:color/white"
     android:textDirection="locale"
     android:textSize="24sp"
     app:slm_headerDisplay="inline|sticky"
     app:slm_isHeader="true"
     app:slm_section_headerMarginStart="56dip"
-    tools:text="Header Item" /><!--app:slm_headerEndMargin="56dip"-->
+    tools:text="Header Item" />

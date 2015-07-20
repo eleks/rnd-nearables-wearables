@@ -9,11 +9,11 @@ import com.eleks.rnd.nearables.R;
 /**
  * Simple view holder for a single text view.
  */
-class CountryViewHolder extends RecyclerView.ViewHolder {
+class LabelViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTextView;
 
-    CountryViewHolder(View view) {
+    LabelViewHolder(View view) {
         super(view);
 
         mTextView = (TextView) view.findViewById(R.id.text);
@@ -23,8 +23,4 @@ class CountryViewHolder extends RecyclerView.ViewHolder {
         mTextView.setText(text);
     }
 
-    @Override
-    public String toString() {
-        return mTextView.getText().toString();
-    }
 }
