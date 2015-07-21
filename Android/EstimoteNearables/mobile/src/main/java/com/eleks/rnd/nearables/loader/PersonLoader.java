@@ -58,7 +58,8 @@ public class PersonLoader extends BaseLoader<PersonLoaderResult> {
 
             if (TextUtils.isEmpty(constraint)) {
                 result.setPersons(pDao.queryForAll());
-                return result;
+            } else {
+                result.setPersons(pDao.findByName(constraint));
             }
         } catch (Exception e) {
             result.setException(e);

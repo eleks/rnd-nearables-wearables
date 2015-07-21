@@ -39,7 +39,7 @@ import de.greenrobot.event.EventBus;
  * Created by bogdan.melnychuk on 13.07.2015.
  */
 public class HttpService {
-    private static final String SERVER = "http://ec2-52-28-4-69.eu-central-1.compute.amazonaws.com:8080";
+    private static final String SERVER = " http://172.25.3.68:8080";
     public static final String RECENT = SERVER + "/track/recent";
     public static final String SAVE = SERVER + "/track/save";
 

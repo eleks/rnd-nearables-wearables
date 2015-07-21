@@ -68,6 +68,10 @@ public class Person {
         this.isFavorite = isFavorite;
     }
 
+    public long getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Person{" +

@@ -6,11 +6,14 @@ import android.content.Loader;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,19 +28,68 @@ import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.loader.LoaderIDs;
 import com.eleks.rnd.nearables.loader.PersonLoader;
 import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
+import com.eleks.rnd.nearables.model.Person;
 import com.tonicartos.superslim.LayoutManager;
+
+import java.lang.ref.WeakReference;
+import java.util.Set;
 
 /**
  * Created by bogdan.melnychuk on 17.07.2015.
  */
 public class PeopleFragment extends Fragment implements LoaderManager.LoaderCallbacks<PersonLoaderResult> {
+    private static final int SEARCH_MESSAGE = 0;
+
     private RecyclerView mRecyclerView;
     private PersonAdapter mAdapter;
     private int mHeaderDisplay;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FloatingActionButton fab;
+    private String searchConstraint;
+    private ActionMode actionMode;
+    private OfflineSearchHandler offlineSearchHandler = new OfflineSearchHandler(this);
 
     private MenuItem searchItem;
+
+    private static final class OfflineSearchHandler extends Handler {
+        private final WeakReference<PeopleFragment> reference;
+
+        public OfflineSearchHandler(PeopleFragment employeeFragment) {
+            reference = new WeakReference<>(employeeFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            PeopleFragment fragment = reference.get();
+            if (fragment.isAdded() && fragment != null) {
+                fragment.getLoaderManager().restartLoader(LoaderIDs.PERSON_LOADER.ordinal(), null, reference.get());
+            }
+        }
+
+    }
+
+    ActionMode.Callback amCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            PeopleFragment.this.actionMode = actionMode;
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +124,21 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LayoutManager(getActivity()));
         mAdapter = new PersonAdapter(getActivity(), mHeaderDisplay);
+        mAdapter.setPersonCheckeListener(new PersonAdapter.PersonCheckeListener() {
+            @Override
+            public void onPersonCheck(Person p, boolean checked, Set<Long> allCheked) {
+                if(allCheked.size() > 0) {
+                    if(actionMode == null) {
+                        getActivity().startActionMode(amCallback);
+                    }
+                } else {
+                    if(PeopleFragment.this.actionMode != null) {
+                        actionMode.finish();
+                        actionMode = null;
+                    }
+                }
+            }
+        });
         mAdapter.setHeaderDisplay(mHeaderDisplay);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -128,7 +195,11 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                searchConstraint = newText;
+                if (offlineSearchHandler != null) {
+                    offlineSearchHandler.removeMessages(SEARCH_MESSAGE);
+                    offlineSearchHandler.sendMessageDelayed(offlineSearchHandler.obtainMessage(SEARCH_MESSAGE), 600);
+                }
                 return true;
             }
         });
@@ -139,9 +210,9 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         if (bundle == null) {
             bundle = new Bundle();
         }
-        //if (!TextUtils.isEmpty(searchConstraint)) {
-        //    bundle.putString(EmployeeLoader.CONSTRAINT, searchConstraint);
-        //}
+        if (!TextUtils.isEmpty(searchConstraint)) {
+            bundle.putString(PersonLoader.CONSTRAINT, searchConstraint);
+        }
         return new PersonLoader(getActivity(), bundle);
     }
 

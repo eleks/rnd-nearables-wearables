@@ -16,8 +16,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Simple view holder for a single text view.
  */
 class PersonViewHolder extends RecyclerView.ViewHolder {
-
-
     final CircleImageView imgView;
     final TextView txtViewName;
     final TextView txtViewLocation;
