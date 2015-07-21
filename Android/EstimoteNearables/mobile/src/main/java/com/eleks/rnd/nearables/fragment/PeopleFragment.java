@@ -87,7 +87,8 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-
+            mAdapter.clearSelection();
+            PeopleFragment.this.actionMode = null;
         }
     };
 
@@ -131,6 +132,7 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
                     if(actionMode == null) {
                         getActivity().startActionMode(amCallback);
                     }
+                    actionMode.setTitle(allCheked.size() + " selected");
                 } else {
                     if(PeopleFragment.this.actionMode != null) {
                         actionMode.finish();

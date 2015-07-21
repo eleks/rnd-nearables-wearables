@@ -62,6 +62,11 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public void clearSelection() {
+        selected.clear();
+        notifyDataSetChanged();
+    }
+
     public PersonAdapter(Context context, int headerMode) {
         mContext = context;
         mHeaderDisplay = headerMode;
