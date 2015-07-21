@@ -67,6 +67,6 @@
         android:layout_alignLeft="@id/detailsContainer"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/button_text_pressed"/>
+        android:background="#2C2B3B"/>
 
 </RelativeLayout>

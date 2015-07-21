@@ -1,19 +1,15 @@
 package com.eleks.rnd.nearables.activity;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.eleks.rnd.nearables.PreferencesManager;
 import com.eleks.rnd.nearables.R;
-import com.eleks.rnd.nearables.fragment.MatesFragment;
+import com.eleks.rnd.nearables.fragment.PeopleFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -37,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
 
-        Fragment f = new MatesFragment();
-        getFragmentManager().beginTransaction().replace(R.id.fragment, f, MatesFragment.class.getName()).commit();
+        Fragment f = new PeopleFragment();
+        getFragmentManager().beginTransaction().replace(R.id.fragment, f, PeopleFragment.class.getName()).commit();
 
 //        TextView message = (TextView) findViewById(R.id.message);
 //

@@ -16,12 +16,12 @@ import com.tonicartos.superslim.LinearSLM;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_HEADER = 0x01;
     private static final int VIEW_TYPE_CONTENT = 0x00;
 
 
-    private final ArrayList<LineItem> mItems;
+    private ArrayList<LineItem> mItems;
 
     private int mHeaderDisplay;
 
@@ -29,14 +29,8 @@ public class MatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private final Context mContext;
 
-    public MatesAdapter(Context context, int headerMode) {
-        mContext = context;
-
-        final List<Person> people = Person.getPersons();
-        mHeaderDisplay = headerMode;
-
+    public void setData(List<Person> people) {
         mItems = new ArrayList<>();
-
         //Insert headers into list of items.
         String lastHeader = "";
         int sectionManager = -1;
@@ -62,6 +56,13 @@ public class MatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mItems.add(new LineItem(people.get(i), false, sectionFirstPosition));
         }
         setMarginsFixed(true);
+        notifyDataSetChanged();
+    }
+
+    public PersonAdapter(Context context, int headerMode) {
+        mContext = context;
+        mHeaderDisplay = headerMode;
+        mItems = new ArrayList<>();
     }
 
     @Override
