@@ -1,6 +1,10 @@
 package com.eleks.rnd.nearables.service;
 
+import android.content.Context;
+
 import com.eleks.rnd.nearables.AuthResponse;
+import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.model.Movement;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -12,18 +16,40 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Created by bogdan.melnychuk on 13.07.2015.
  */
 public class HttpService {
-    private static final String SERVER = " http://172.25.3.68:8080";
+    private static final String SERVER = "http://172.25.3.68:8080";
     public static final String AUTH = SERVER + "/authenticate";
+    public static final String RECENT = SERVER + "/track/recent";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     public static final String getImageUrl(int empId) {
         return SERVER + "/employee/" + empId + "/photo";
+    }
+
+    private static Request.Builder getDefaultRequest(String path, Context context) {
+        return new Request.Builder()
+                .url(path)
+                .addHeader("user_name", PreferencesManager.getUserName(context))
+                .addHeader("access_token", PreferencesManager.getAccessToken(context));
+
+    }
+
+    public static List<Movement> getRecentEvents(Context context) throws IOException {
+        final OkHttpClient client = new OkHttpClient();
+        Request request = getDefaultRequest(RECENT, context).build();
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+        Type itemsListType = new TypeToken<List<Movement>>() {
+        }.getType();
+        List<Movement> movements = new Gson().fromJson(response.body().charStream(), itemsListType);
+        return movements;
     }
 
     public static AuthResponse authorize(String userName, String userPass) throws IOException {
