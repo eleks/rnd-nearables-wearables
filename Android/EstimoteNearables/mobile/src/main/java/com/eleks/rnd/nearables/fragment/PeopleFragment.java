@@ -25,7 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.activity.LoginActivity;
 import com.eleks.rnd.nearables.adapter.PersonAdapter;
@@ -33,7 +33,7 @@ import com.eleks.rnd.nearables.loader.LoaderIDs;
 import com.eleks.rnd.nearables.loader.PersonLoader;
 import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
 import com.eleks.rnd.nearables.model.Person;
-import com.eleks.rnd.nearables.utils.PersonUtils;
+import com.eleks.rnd.nearables.util.PersonUtils;
 import com.github.johnkil.print.PrintDrawable;
 import com.tonicartos.superslim.LayoutManager;
 

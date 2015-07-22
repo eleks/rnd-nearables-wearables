@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.eleks.rnd.nearables.AuthResponse;
 import com.eleks.rnd.nearables.service.HttpService;
-import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.eleks.rnd.nearables.R;
 
 import java.io.IOException;

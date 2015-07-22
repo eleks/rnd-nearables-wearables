@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.eleks.rnd.nearables.database.DatabaseHelper;
 import com.eleks.rnd.nearables.database.dao.PersonDao;
 import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
@@ -14,10 +14,8 @@ import com.eleks.rnd.nearables.service.HttpService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;

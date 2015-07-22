@@ -14,7 +14,6 @@ import com.eleks.rnd.nearables.service.HttpService;
 import com.eleks.rnd.nearables.util.DateUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 

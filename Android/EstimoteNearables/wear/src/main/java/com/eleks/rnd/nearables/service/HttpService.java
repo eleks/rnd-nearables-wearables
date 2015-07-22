@@ -1,7 +1,6 @@
 package com.eleks.rnd.nearables.service;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.eleks.rnd.nearables.event.SendingEvent;
@@ -14,24 +13,14 @@ import com.estimote.sdk.repackaged.okhttp_v2_2_0.com.squareup.okhttp.OkHttpClien
 import com.estimote.sdk.repackaged.okhttp_v2_2_0.com.squareup.okhttp.Request;
 import com.estimote.sdk.repackaged.okhttp_v2_2_0.com.squareup.okhttp.RequestBody;
 import com.estimote.sdk.repackaged.okhttp_v2_2_0.com.squareup.okhttp.Response;
-import com.estimote.sdk.repackaged.okio_v1_3_0.okio.BufferedSink;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 
@@ -39,7 +28,7 @@ import de.greenrobot.event.EventBus;
  * Created by bogdan.melnychuk on 13.07.2015.
  */
 public class HttpService {
-    private static final String SERVER = " http://172.25.3.68:8080";
+    private static final String SERVER = "http://172.25.3.68:8080";
     public static final String RECENT = SERVER + "/track/recent";
     public static final String SAVE = SERVER + "/track/save";
 

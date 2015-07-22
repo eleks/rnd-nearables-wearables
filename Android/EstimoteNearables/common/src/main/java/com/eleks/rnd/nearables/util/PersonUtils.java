@@ -1,4 +1,4 @@
-package com.eleks.rnd.nearables.utils;
+package com.eleks.rnd.nearables.util;
 
 import com.eleks.rnd.nearables.model.Person;
 

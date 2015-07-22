@@ -1,4 +1,4 @@
-package com.eleks.rnd.nearables;
+package com.eleks.rnd.nearables.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -43,6 +43,14 @@ public class PreferencesManager {
         return getPreferences(context).getString(key, defaultValue);
     }
 
+    public static void putLong(Context context, String key, long value) {
+        getPreferences(context).edit().putLong(key, value).commit();
+    }
+
+    public static long getLong(Context context, String key, long defaultValue) {
+        return getPreferences(context).getLong(key, defaultValue);
+    }
+
     public static String getUserName(Context context) {
         return getString(context, "userName", null);
     }
@@ -66,6 +74,22 @@ public class PreferencesManager {
     public static void clear(Context context) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.clear().commit();
+    }
+
+    public static void putLastLocation(Context context, String value) {
+        putString(context, "lastLocation", value);
+    }
+
+    public static String getLastLocation(Context context) {
+        return getString(context, "lastLocation", null);
+    }
+
+    public static void putLastLocationDate(Context context, long value) {
+        putLong(context, "lastLocationDate", value);
+    }
+
+    public static long getLastLocationDate(Context context) {
+        return getLong(context, "lastLocationDate", 0);
     }
 
     public static Set<Long> getFavorites(Context context) {

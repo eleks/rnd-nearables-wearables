@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.fragment.PeopleFragment;
 import com.google.android.gms.common.ConnectionResult;

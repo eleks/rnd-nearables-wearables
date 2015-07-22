@@ -3,7 +3,7 @@ package com.eleks.rnd.nearables.service;
 import android.content.Context;
 
 import com.eleks.rnd.nearables.AuthResponse;
-import com.eleks.rnd.nearables.PreferencesManager;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.eleks.rnd.nearables.model.Movement;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
