@@ -62,8 +62,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +78,8 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //LoginAsync async = new LoginAsync();
-                //async.execute();
-                goToDashboard();
+                LoginAsync async = new LoginAsync();
+                async.execute();
             }
         });
     }

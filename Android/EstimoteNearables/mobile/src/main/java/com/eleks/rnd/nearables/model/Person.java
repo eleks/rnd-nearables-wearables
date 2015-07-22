@@ -24,7 +24,7 @@ public class Person {
     @DatabaseField
     private String location;
     @DatabaseField
-    private int empId;
+    private long empId;
     @DatabaseField
     private boolean isFavorite;
 
@@ -52,11 +52,11 @@ public class Person {
         this.location = location;
     }
 
-    public int getEmpId() {
+    public long getEmpId() {
         return empId;
     }
 
-    public void setEmpId(int empId) {
+    public void setEmpId(long empId) {
         this.empId = empId;
     }
 
@@ -78,5 +78,21 @@ public class Person {
                 "name='" + name + '\'' +
                 ", location='" + location + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        return id == person.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

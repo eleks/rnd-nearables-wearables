@@ -5,6 +5,18 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.eleks.rnd.nearables.model.Person;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import timber.log.Timber;
+
 /**
  * Created by bogdan.melnychuk on 13.07.2015.
  */
@@ -55,5 +67,41 @@ public class PreferencesManager {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.clear().commit();
     }
+
+    public static Set<Long> getFavorites(Context context) {
+        Set<Long> result = new HashSet<>();
+        try {
+            String favorites = getString(context, "favorites", null);
+            String[] array = favorites.split("-");
+
+            for (String s : array) {
+                if (!TextUtils.isEmpty(s)) {
+                    result.add(Long.valueOf(s));
+                }
+            }
+        } catch (Exception e) {
+            Timber.e(e, e.getMessage());
+        }
+        return result;
+    }
+
+    public static void putFavorites(Collection<Person> list, Context context) {
+        StringBuilder sBuilder = new StringBuilder();
+        for(Person p : list) {
+            sBuilder.append(p.getEmpId());
+            sBuilder.append("-");
+        }
+        putString(context, "favorites", sBuilder.toString());
+    }
+
+    public static void putFavoritesIds(Collection<Long> idsList, Context context) {
+        StringBuilder sBuilder = new StringBuilder();
+        for(Long l : idsList) {
+            sBuilder.append(l);
+            sBuilder.append("-");
+        }
+        putString(context, "favorites", sBuilder.toString());
+    }
+
 
 }

@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:visible="false"
+        android:title="Add To Favorites"
+        android:id="@+id/ai_favorite"
+        android:icon="@drawable/ic_pass"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:visible="false"
+        android:title="Remove From Favorites"
+        android:id="@+id/ai_unfavorite"
+        android:icon="@drawable/ic_user"
+        app:showAsAction="ifRoom|collapseActionView" />
+</menu>

@@ -14,6 +14,7 @@ import com.tonicartos.superslim.GridSLM;
 import com.tonicartos.superslim.LinearSLM;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,9 +23,9 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int VIEW_TYPE_HEADER = 0x01;
     private static final int VIEW_TYPE_CONTENT = 0x00;
 
-    private Set<Long> selected = new HashSet<>();
-    private ArrayList<LineItem> mItems;
-    private PersonCheckeListener checkeListener;
+    private Collection<Person> selected = new HashSet<>();
+    private List<LineItem> mItems;
+    private PersonCheckListener checkListener;
 
     private int mHeaderDisplay;
 
@@ -67,14 +68,18 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public Collection<Person> getSelected() {
+        return selected;
+    }
+
     public PersonAdapter(Context context, int headerMode) {
         mContext = context;
         mHeaderDisplay = headerMode;
         mItems = new ArrayList<>();
     }
 
-    public void setPersonCheckeListener(PersonCheckeListener listener) {
-        this.checkeListener = listener;
+    public void setPersonCheckeListener(PersonCheckListener listener) {
+        this.checkListener = listener;
     }
 
     @Override
@@ -102,20 +107,20 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             pHolder.imgView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    boolean checked = !selected.contains(person.getId());
+                    boolean checked = !selected.contains(person);
                     if (checked) {
                         pHolder.imgView.setAlpha(0.5f);
-                        selected.add(person.getId());
+                        selected.add(person);
                     } else {
                         pHolder.imgView.setAlpha(1f);
-                        selected.remove(person.getId());
+                        selected.remove(person);
                     }
-                    if(checkeListener != null) {
-                        checkeListener.onPersonCheck(person, checked, selected);
+                    if(checkListener != null) {
+                        checkListener.onPersonCheck(person, checked, selected);
                     }
                 }
             });
-            pHolder.imgView.setAlpha(selected.contains(person.getId()) ? 0.5f : 1f);
+            pHolder.imgView.setAlpha(selected.contains(person) ? 0.5f : 1f);
         } else {
             ((LabelViewHolder)holder).bindItem(item.data.toString());
         }
@@ -180,7 +185,7 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public interface PersonCheckeListener {
-        void onPersonCheck(Person p, boolean checked, Set<Long> allCheked);
+    public interface PersonCheckListener {
+        void onPersonCheck(Person p, boolean checked, Collection<Person> allCheked);
     }
 }

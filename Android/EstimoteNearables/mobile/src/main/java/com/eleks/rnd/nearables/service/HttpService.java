@@ -17,7 +17,7 @@ import java.lang.reflect.Type;
  * Created by bogdan.melnychuk on 13.07.2015.
  */
 public class HttpService {
-    private static final String SERVER = "http://ec2-52-28-4-69.eu-central-1.compute.amazonaws.com:8080";
+    private static final String SERVER = " http://172.25.3.68:8080";
     public static final String AUTH = SERVER + "/authenticate";
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

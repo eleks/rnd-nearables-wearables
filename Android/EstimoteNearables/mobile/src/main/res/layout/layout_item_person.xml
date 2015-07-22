@@ -12,7 +12,6 @@
         android:layout_height="52dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
 
@@ -20,6 +19,7 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/detailsContainer"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="8dp"
         android:fontFamily="sans-serif-condensed-light"

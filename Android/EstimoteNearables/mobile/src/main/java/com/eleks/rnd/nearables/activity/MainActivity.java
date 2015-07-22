@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.eleks.rnd.nearables.PreferencesManager;
 import com.eleks.rnd.nearables.R;
@@ -50,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 //        });
 //
 //        message.setText("Hello " + PreferencesManager.getUserName(this));
-//        initGoogleApiClient();
+
+        Toast.makeText(this, "Hello " + PreferencesManager.getUserName(this), Toast.LENGTH_SHORT).show();
+        initGoogleApiClient();
     }
 
     private void initGoogleApiClient() {

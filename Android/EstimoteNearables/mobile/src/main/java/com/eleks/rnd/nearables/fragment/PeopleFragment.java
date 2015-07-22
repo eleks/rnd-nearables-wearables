@@ -2,6 +2,7 @@ package com.eleks.rnd.nearables.fragment;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,14 +25,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.eleks.rnd.nearables.PreferencesManager;
 import com.eleks.rnd.nearables.R;
+import com.eleks.rnd.nearables.activity.LoginActivity;
 import com.eleks.rnd.nearables.loader.LoaderIDs;
 import com.eleks.rnd.nearables.loader.PersonLoader;
 import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
 import com.eleks.rnd.nearables.model.Person;
+import com.eleks.rnd.nearables.utils.PersonUtils;
 import com.tonicartos.superslim.LayoutManager;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -50,6 +56,9 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
     private OfflineSearchHandler offlineSearchHandler = new OfflineSearchHandler(this);
 
     private MenuItem searchItem;
+    private MenuItem logout;
+    private MenuItem addToFav;
+    private MenuItem removeFromFav;
 
     private static final class OfflineSearchHandler extends Handler {
         private final WeakReference<PeopleFragment> reference;
@@ -72,6 +81,10 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             PeopleFragment.this.actionMode = actionMode;
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.menu_am_persons, menu);
+            addToFav = menu.findItem(R.id.ai_favorite);
+            removeFromFav = menu.findItem(R.id.ai_unfavorite);
             return true;
         }
 
@@ -82,7 +95,23 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
 
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            return false;
+            Set<Long> favorites = PreferencesManager.getFavorites(getActivity());
+            Collection<Person> selected = mAdapter.getSelected();
+            switch (menuItem.getItemId()) {
+                case R.id.ai_favorite:
+                    for(Person p : selected) {
+                        favorites.add(p.getEmpId());
+                    }
+                    break;
+                case R.id.ai_unfavorite:
+                    for(Person p : selected) {
+                        favorites.remove(p.getEmpId());
+                    }
+                    break;
+            }
+            PreferencesManager.putFavoritesIds(favorites, getActivity());
+            restartLoader();
+            return true;
         }
 
         @Override
@@ -98,10 +127,14 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
     }
 
+    private void restartLoader() {
+        getLoaderManager().restartLoader(LoaderIDs.PERSON_LOADER.ordinal(), null, this);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(LoaderIDs.PERSON_LOADER.ordinal(), null, this);
+        restartLoader();
     }
 
     @Override
@@ -125,14 +158,15 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LayoutManager(getActivity()));
         mAdapter = new PersonAdapter(getActivity(), mHeaderDisplay);
-        mAdapter.setPersonCheckeListener(new PersonAdapter.PersonCheckeListener() {
+        mAdapter.setPersonCheckeListener(new PersonAdapter.PersonCheckListener() {
             @Override
-            public void onPersonCheck(Person p, boolean checked, Set<Long> allCheked) {
-                if(allCheked.size() > 0) {
+            public void onPersonCheck(Person p, boolean checked, final Collection<Person> allChecked) {
+                if(allChecked.size() > 0) {
                     if(actionMode == null) {
                         getActivity().startActionMode(amCallback);
                     }
-                    actionMode.setTitle(allCheked.size() + " selected");
+                    actionMode.setTitle(allChecked.size() + " selected");
+                    showFavAction(allChecked);
                 } else {
                     if(PeopleFragment.this.actionMode != null) {
                         actionMode.finish();
@@ -154,11 +188,30 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         });
     }
 
+    private void showFavAction(Collection<Person> personList) {
+        boolean containsFavorite = PersonUtils.containsFavorite(personList);
+        boolean containsNonFavorite = PersonUtils.containsNonFavorite(personList);
+
+        if(containsFavorite && containsNonFavorite) {
+            addToFav.setVisible(false);
+            removeFromFav.setVisible(false);
+        } else if(containsFavorite) {
+            addToFav.setVisible(false);
+            removeFromFav.setVisible(true);
+        } else {
+            addToFav.setVisible(true);
+            removeFromFav.setVisible(false);
+        }
+    }
+
     private void toogleToolbar(boolean search) {
         if (search) {
             fab.setVisibility(View.GONE);
         } else {
             fab.setVisibility(View.VISIBLE);
+        }
+        if(logout != null) {
+            logout.setVisible(!search);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getActivity().getWindow();
@@ -173,6 +226,7 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
         searchItem = menu.findItem(R.id.mi_search);
+        logout = menu.findItem(R.id.mi_logout);
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -218,11 +272,19 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         return new PersonLoader(getActivity(), bundle);
     }
 
+    private void finishActionMode() {
+        if(actionMode != null) {
+            actionMode.finish();
+            actionMode = null;
+        }
+    }
+
     @Override
     public void onLoadFinished(Loader<PersonLoaderResult> loader, PersonLoaderResult personLoaderResult) {
         if (personLoaderResult.wasSuccessful()) {
+            mAdapter.clearSelection();
+            finishActionMode();
             mAdapter.setData(personLoaderResult.getPersons());
-
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -234,5 +296,18 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoaderReset(Loader<PersonLoaderResult> loader) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mi_logout:
+                PreferencesManager.clear(getActivity());
+                Intent myIntent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(myIntent);
+                getActivity().finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

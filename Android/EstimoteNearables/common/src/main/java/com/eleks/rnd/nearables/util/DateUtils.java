@@ -48,12 +48,12 @@ public class DateUtils {
         long hrs = timeDiff.get(TimeUnit.HOURS);
         if (hrs > 0) {
             s.append(timeDiff.get(TimeUnit.HOURS));
-            s.append(" hrs, ");
+            s.append(" h, ");
         }
         long min = timeDiff.get(TimeUnit.MINUTES);
         if (min > 0) {
             s.append(timeDiff.get(TimeUnit.MINUTES));
-            s.append(" min ago");
+            s.append(" m ago");
         }
         if (s.length() == 0) {
             s.append("Just Now");
