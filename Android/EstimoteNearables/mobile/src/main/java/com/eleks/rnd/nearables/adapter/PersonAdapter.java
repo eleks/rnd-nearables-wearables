@@ -1,4 +1,4 @@
-package com.eleks.rnd.nearables.fragment;
+package com.eleks.rnd.nearables.adapter;
 
 
 import android.content.Context;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_HEADER = 0x01;

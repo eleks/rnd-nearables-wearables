@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="start"
-    android:layoutDirection="locale"
-    android:padding="16dip"
-    android:textColor="@android:color/white"
-    android:textDirection="locale"
-    android:textSize="24sp"
     app:slm_headerDisplay="inline|sticky"
     app:slm_isHeader="true"
     app:slm_section_headerMarginStart="56dip"
-    tools:text="Header Item" />
+    android:padding="16dip">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layoutDirection="locale"
+        android:textColor="@android:color/white"
+        android:textDirection="locale"
+        android:textSize="24sp"
+        tools:text="Header Item" />
+
+    <com.github.johnkil.print.PrintView
+        android:id="@+id/icon"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:iconText="@string/ic_star"
+        app:iconColor="@android:color/white"
+        app:iconSize="@dimen/fab_icon_size"/>
+
+</RelativeLayout>

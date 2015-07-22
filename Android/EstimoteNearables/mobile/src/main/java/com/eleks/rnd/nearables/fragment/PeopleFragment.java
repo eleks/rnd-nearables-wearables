@@ -28,16 +28,17 @@ import android.widget.Toast;
 import com.eleks.rnd.nearables.PreferencesManager;
 import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.activity.LoginActivity;
+import com.eleks.rnd.nearables.adapter.PersonAdapter;
 import com.eleks.rnd.nearables.loader.LoaderIDs;
 import com.eleks.rnd.nearables.loader.PersonLoader;
 import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
 import com.eleks.rnd.nearables.model.Person;
 import com.eleks.rnd.nearables.utils.PersonUtils;
+import com.github.johnkil.print.PrintDrawable;
 import com.tonicartos.superslim.LayoutManager;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -85,6 +86,23 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
             inflater.inflate(R.menu.menu_am_persons, menu);
             addToFav = menu.findItem(R.id.ai_favorite);
             removeFromFav = menu.findItem(R.id.ai_unfavorite);
+
+            addToFav.setIcon(
+                    new PrintDrawable.Builder(getActivity())
+                            .iconTextRes(R.string.ic_star)
+                            .iconColorRes(android.R.color.white)
+                            .iconSizeRes(R.dimen.fab_icon_size)
+                            .build()
+            );
+
+            removeFromFav.setIcon(
+                    new PrintDrawable.Builder(getActivity())
+                            .iconTextRes(R.string.ic_star_outline)
+                            .iconColorRes(android.R.color.white)
+                            .iconSizeRes(R.dimen.fab_icon_size)
+                            .build()
+            );
+
             return true;
         }
 

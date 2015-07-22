@@ -1,4 +1,4 @@
-package com.eleks.rnd.nearables.fragment;
+package com.eleks.rnd.nearables.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;

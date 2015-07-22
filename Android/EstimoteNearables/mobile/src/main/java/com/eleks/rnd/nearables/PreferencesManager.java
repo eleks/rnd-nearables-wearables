@@ -72,11 +72,13 @@ public class PreferencesManager {
         Set<Long> result = new HashSet<>();
         try {
             String favorites = getString(context, "favorites", null);
-            String[] array = favorites.split("-");
+            if(!TextUtils.isEmpty(favorites)) {
+                String[] array = favorites.split("-");
 
-            for (String s : array) {
-                if (!TextUtils.isEmpty(s)) {
-                    result.add(Long.valueOf(s));
+                for (String s : array) {
+                    if (!TextUtils.isEmpty(s)) {
+                        result.add(Long.valueOf(s));
+                    }
                 }
             }
         } catch (Exception e) {
