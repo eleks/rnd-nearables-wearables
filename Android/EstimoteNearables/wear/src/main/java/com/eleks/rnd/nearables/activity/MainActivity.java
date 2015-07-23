@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
 
         @Override
         public Fragment getFragment(int row, int col) {
-            if(col == 1) {
+            if(col == 0) {
                 return new RecentFragment();
             } else {
                 return new MyLocationFragment();

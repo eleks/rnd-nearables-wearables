@@ -49,5 +49,21 @@ public class Movement {
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Movement movement = (Movement) o;
+
+        return employeeId == movement.employeeId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return employeeId;
+    }
 }
 

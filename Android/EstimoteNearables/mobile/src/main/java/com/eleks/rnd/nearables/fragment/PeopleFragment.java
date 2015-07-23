@@ -25,21 +25,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.activity.LoginActivity;
+import com.eleks.rnd.nearables.activity.MainActivity;
 import com.eleks.rnd.nearables.adapter.PersonAdapter;
 import com.eleks.rnd.nearables.loader.LoaderIDs;
 import com.eleks.rnd.nearables.loader.PersonLoader;
 import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
 import com.eleks.rnd.nearables.model.Person;
 import com.eleks.rnd.nearables.util.PersonUtils;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 import com.github.johnkil.print.PrintDrawable;
 import com.tonicartos.superslim.LayoutManager;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Set;
+
+import me.yugy.github.reveallayout.RevealLayout;
 
 /**
  * Created by bogdan.melnychuk on 17.07.2015.
@@ -56,6 +59,7 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
     private ActionMode actionMode;
     private OfflineSearchHandler offlineSearchHandler = new OfflineSearchHandler(this);
 
+    private RevealLayout revealLayout;
     private MenuItem searchItem;
     private MenuItem logout;
     private MenuItem addToFav;
@@ -117,17 +121,19 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
             Collection<Person> selected = mAdapter.getSelected();
             switch (menuItem.getItemId()) {
                 case R.id.ai_favorite:
-                    for(Person p : selected) {
+                    for (Person p : selected) {
                         favorites.add(p.getEmpId());
                     }
                     break;
                 case R.id.ai_unfavorite:
-                    for(Person p : selected) {
+                    for (Person p : selected) {
                         favorites.remove(p.getEmpId());
                     }
                     break;
             }
             PreferencesManager.putFavoritesIds(favorites, getActivity());
+            MainActivity activity = (MainActivity) getActivity();
+            activity.sendMessage(MainActivity.MESSAGE_FAVORITE, PreferencesManager.getFavoritesString(getActivity()));
             restartLoader();
             return true;
         }
@@ -166,27 +172,37 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
 
         mHeaderDisplay = getResources().getInteger(R.integer.default_header_display);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        revealLayout = (RevealLayout) view.findViewById(R.id.reveal_layout);
+        revealLayout.setContentShown(false);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchItem.expandActionView();
+                revealLayout.show(revealLayout.getWidth() / 2, revealLayout.getHeight() - 120, 350);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchItem.expandActionView();
+                    }
+                }, 330);
             }
         });
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LayoutManager(getActivity()));
         mAdapter = new PersonAdapter(getActivity(), mHeaderDisplay);
         mAdapter.setPersonCheckeListener(new PersonAdapter.PersonCheckListener() {
             @Override
             public void onPersonCheck(Person p, boolean checked, final Collection<Person> allChecked) {
-                if(allChecked.size() > 0) {
-                    if(actionMode == null) {
+                if (allChecked.size() > 0) {
+                    if (actionMode == null) {
                         getActivity().startActionMode(amCallback);
                     }
                     actionMode.setTitle(allChecked.size() + " selected");
                     showFavAction(allChecked);
                 } else {
-                    if(PeopleFragment.this.actionMode != null) {
+                    if (PeopleFragment.this.actionMode != null) {
                         actionMode.finish();
                         actionMode = null;
                     }
@@ -210,10 +226,10 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         boolean containsFavorite = PersonUtils.containsFavorite(personList);
         boolean containsNonFavorite = PersonUtils.containsNonFavorite(personList);
 
-        if(containsFavorite && containsNonFavorite) {
+        if (containsFavorite && containsNonFavorite) {
             addToFav.setVisible(false);
             removeFromFav.setVisible(false);
-        } else if(containsFavorite) {
+        } else if (containsFavorite) {
             addToFav.setVisible(false);
             removeFromFav.setVisible(true);
         } else {
@@ -222,13 +238,13 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
-    private void toogleToolbar(boolean search) {
+    private void toggleToolbar(boolean search) {
         if (search) {
             fab.setVisibility(View.GONE);
         } else {
             fab.setVisibility(View.VISIBLE);
         }
-        if(logout != null) {
+        if (logout != null) {
             logout.setVisible(!search);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -248,13 +264,13 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                toogleToolbar(true);
+                toggleToolbar(true);
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                toogleToolbar(false);
+                toggleToolbar(false);
                 return true;
             }
         });
@@ -291,7 +307,7 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     private void finishActionMode() {
-        if(actionMode != null) {
+        if (actionMode != null) {
             actionMode.finish();
             actionMode = null;
         }

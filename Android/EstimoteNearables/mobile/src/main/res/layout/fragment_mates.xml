@@ -20,13 +20,29 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <me.yugy.github.reveallayout.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/reveal_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/button_text"
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:textSize="32sp" />
+    </me.yugy.github.reveallayout.RevealLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:src="@drawable/abc_ic_search_api_mtrl_alpha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
-        android:clickable="true" />
+        android:clickable="true"
+        android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
 
 </FrameLayout>

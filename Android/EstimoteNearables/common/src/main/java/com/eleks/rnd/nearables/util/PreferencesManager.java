@@ -92,6 +92,14 @@ public class PreferencesManager {
         return getLong(context, "lastLocationDate", 0);
     }
 
+    public static String getFavoritesString(Context context) {
+       return getString(context, "favorites", null);
+    }
+
+    public static void putFavoritesString(Context context, String value) {
+        putString(context, "favorites", value);
+    }
+
     public static Set<Long> getFavorites(Context context) {
         Set<Long> result = new HashSet<>();
         try {

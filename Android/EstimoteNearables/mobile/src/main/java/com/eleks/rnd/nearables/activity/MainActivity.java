@@ -23,7 +23,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private GoogleApiClient mApiClient;
 
-    private static final String START_ACTIVITY = "/logindetails";
+    public static final String MESSAGE_LOGIN = "/logindetails";
+    public static final String MESSAGE_FAVORITE = "/favorites";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +38,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Fragment f = new PeopleFragment();
         getFragmentManager().beginTransaction().replace(R.id.fragment, f, PeopleFragment.class.getName()).commit();
-
-//        TextView message = (TextView) findViewById(R.id.message);
-//
-//        Button logout = (Button) findViewById(R.id.logout);
-//        logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                PreferencesManager.clear(MainActivity.this);
-//                Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-//                startActivity(myIntent);
-//                MainActivity.this.finish();
-//            }
-//        });
-//
-//        message.setText("Hello " + PreferencesManager.getUserName(this));
 
         Toast.makeText(this, "Hello " + PreferencesManager.getUserName(this), Toast.LENGTH_SHORT).show();
         initGoogleApiClient();
@@ -76,15 +63,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void sendMessage(final String path) {
+    public void sendMessage(final String path, final String message) {
         if (mApiClient.isConnected()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
                     for (Node node : nodes.getNodes()) {
-                        String message = PreferencesManager.getUserName(MainActivity.this) + "-" + PreferencesManager.getAccessToken(MainActivity.this);
-                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mApiClient, node.getId(), START_ACTIVITY, message.getBytes()).await();
+                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mApiClient, node.getId(), path, message.getBytes()).await();
                         if (!result.getStatus().isSuccess()) {
                             Log.e("TAG", "error");
                         } else {
@@ -103,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnected(Bundle bundle) {
         Log.d("TAG", "onConnected");
-        sendMessage(START_ACTIVITY);
+        String loginMessage = PreferencesManager.getUserName(MainActivity.this) + "-" + PreferencesManager.getAccessToken(MainActivity.this);
+        sendMessage(MESSAGE_LOGIN, loginMessage);
     }
 
     @Override

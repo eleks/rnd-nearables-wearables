@@ -12,9 +12,12 @@ import com.eleks.rnd.nearables.R;
 import com.eleks.rnd.nearables.adapter.PeopleListAdapter;
 import com.eleks.rnd.nearables.model.Movement;
 import com.eleks.rnd.nearables.service.HttpService;
+import com.eleks.rnd.nearables.util.PreferencesManager;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by bogdan.melnychuk on 16.07.2015.
@@ -33,6 +36,14 @@ public class RecentFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             try {
                 movements = HttpService.getRecentEvents(getActivity());
+                Set<Long> favorites = PreferencesManager.getFavorites(getActivity());
+                Iterator<Movement> iter = movements.iterator();
+                while(iter.hasNext()) {
+                    Movement m = iter.next();
+                    if(!favorites.contains(Long.valueOf(m.getEmployeeId()))) {
+                        iter.remove();
+                    }
+                }
             } catch (IOException e) {
                 this.e = e;
             }

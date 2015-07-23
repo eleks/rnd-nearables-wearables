@@ -11,18 +11,29 @@ import com.google.android.gms.wearable.WearableListenerService;
  */
 public class WearMessageListenerService extends WearableListenerService {
 
+    public static final String MESSAGE_LOGIN = "/logindetails";
+    public static final String MESSAGE_FAVORITE = "/favorites";
+
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Log.d("TAG", "onMessageReceived()");
+        Log.d("TAG", "onMessageReceived() " + messageEvent.getPath());
+
+        String path = messageEvent.getPath();
         String message = new String(messageEvent.getData());
         Log.d("TAG", "Message " + message);
-        try {
-            String[] s = message.split("-");
-            PreferencesManager.putUserName(getApplicationContext(), s[0]);
-            PreferencesManager.putAccessToken(getApplicationContext(), s[1]);
-            NearablesService.recentOnes = null;
-        } catch (Exception e) {
 
+        if (MESSAGE_LOGIN.equals(path)) {
+            try {
+                String[] s = message.split("-");
+                PreferencesManager.putUserName(getApplicationContext(), s[0]);
+                PreferencesManager.putAccessToken(getApplicationContext(), s[1]);
+                NearablesService.recentOnes = null;
+            } catch (Exception e) {
+            }
+        }
+
+        if(MESSAGE_FAVORITE.equals(path)) {
+            PreferencesManager.putFavoritesString(getApplicationContext(), message);
         }
 
     }
