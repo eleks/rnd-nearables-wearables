@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/spacing_small"
     android:paddingRight="@dimen/spacing_small"
     android:paddingTop="@dimen/spacing_small">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/image"
+    <RelativeLayout
+        android:id="@+id/imageContainer"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.github.johnkil.print.PrintView
+            android:visibility="invisible"
+            android:id="@+id/check_icon"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconText="@string/ic_check"
+            app:iconColor="@android:color/white"
+            app:iconSize="@dimen/fab_icon_size"/>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/detailsContainer"
         android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/detailsContainer"
         android:layout_marginLeft="8dp"
         android:fontFamily="sans-serif-condensed-light"
         android:gravity="center_vertical"
@@ -32,11 +49,11 @@
         android:id="@+id/detailsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/image"
-        android:layout_alignTop="@+id/image"
+        android:layout_alignBottom="@+id/imageContainer"
+        android:layout_alignTop="@+id/imageContainer"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/time"
-        android:layout_toRightOf="@+id/image">
+        android:layout_toRightOf="@+id/imageContainer">
 
         <TextView
             android:id="@+id/name"
@@ -63,10 +80,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_below="@id/detailsContainer"
-        android:layout_alignLeft="@id/detailsContainer"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#2C2B3B"/>
+        android:layout_alignLeft="@id/detailsContainer"
+        android:layout_below="@id/detailsContainer"
+        android:background="#2C2B3B" />
 
 </RelativeLayout>

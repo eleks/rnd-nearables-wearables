@@ -37,6 +37,7 @@
     </me.yugy.github.reveallayout.RevealLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:visibility="invisible"
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

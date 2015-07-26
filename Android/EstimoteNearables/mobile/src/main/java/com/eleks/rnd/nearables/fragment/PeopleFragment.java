@@ -35,6 +35,7 @@ import com.eleks.rnd.nearables.loader.result.PersonLoaderResult;
 import com.eleks.rnd.nearables.model.Person;
 import com.eleks.rnd.nearables.util.PersonUtils;
 import com.eleks.rnd.nearables.util.PreferencesManager;
+import com.eleks.rnd.nearables.view.anim.AnimationUtils;
 import com.github.johnkil.print.PrintDrawable;
 import com.tonicartos.superslim.LayoutManager;
 
@@ -192,7 +193,7 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LayoutManager(getActivity()));
         mAdapter = new PersonAdapter(getActivity(), mHeaderDisplay);
-        mAdapter.setPersonCheckeListener(new PersonAdapter.PersonCheckListener() {
+        mAdapter.setPersonCheckListener(new PersonAdapter.PersonCheckListener() {
             @Override
             public void onPersonCheck(Person p, boolean checked, final Collection<Person> allChecked) {
                 if (allChecked.size() > 0) {
@@ -220,6 +221,17 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
                 getLoaderManager().restartLoader(LoaderIDs.PERSON_LOADER.ordinal(), b, PeopleFragment.this);
             }
         });
+        showFab(600);
+
+    }
+
+    private void showFab(int delay) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AnimationUtils.animateBounceIn(fab);
+            }
+        }, delay);
     }
 
     private void showFavAction(Collection<Person> personList) {
@@ -242,7 +254,8 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
         if (search) {
             fab.setVisibility(View.GONE);
         } else {
-            fab.setVisibility(View.VISIBLE);
+            //fab.setVisibility(View.VISIBLE);
+            showFab(400);
         }
         if (logout != null) {
             logout.setVisible(!search);
@@ -319,11 +332,11 @@ public class PeopleFragment extends Fragment implements LoaderManager.LoaderCall
             mAdapter.clearSelection();
             finishActionMode();
             mAdapter.setData(personLoaderResult.getPersons());
-            if (mSwipeRefreshLayout.isRefreshing()) {
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
         } else {
             Toast.makeText(getActivity(), personLoaderResult.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 

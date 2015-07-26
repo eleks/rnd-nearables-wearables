@@ -13,6 +13,7 @@ import com.eleks.rnd.nearables.model.Person;
 import com.eleks.rnd.nearables.service.HttpService;
 import com.eleks.rnd.nearables.util.DateUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.Date;
@@ -24,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 class PersonViewHolder extends RecyclerView.ViewHolder {
     final CircleImageView imgView;
+    final View checkIcon;
     final TextView txtViewName;
     final TextView txtViewLocation;
     final TextView txtViewTime;
@@ -39,6 +41,7 @@ class PersonViewHolder extends RecyclerView.ViewHolder {
         txtViewName = (TextView) view.findViewById(R.id.name);
         txtViewLocation = (TextView) view.findViewById(R.id.location);
         txtViewTime = (TextView) view.findViewById(R.id.time);
+        checkIcon = view.findViewById(R.id.check_icon);
     }
 
     public void bindItem(Person p) {
@@ -48,8 +51,10 @@ class PersonViewHolder extends RecyclerView.ViewHolder {
                 Drawable d = new BitmapDrawable(context.getResources(), loadedImage);
                 imgView.setImageDrawable(d);
             }
+
+
         });
-        //Picasso.with(context).load(HttpService.getImageUrl((int) p.getEmpId())).into(imgView);
+
         txtViewName.setText(p.getName());
         txtViewLocation.setText(p.getLocation());
         txtViewTime.setText(DateUtils.getDateDiffMessage(new Date(p.getTimestamp())));

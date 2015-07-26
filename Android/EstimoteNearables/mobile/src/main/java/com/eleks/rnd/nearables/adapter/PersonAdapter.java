@@ -77,7 +77,7 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mItems = new ArrayList<>();
     }
 
-    public void setPersonCheckeListener(PersonCheckListener listener) {
+    public void setPersonCheckListener(PersonCheckListener listener) {
         this.checkListener = listener;
     }
 
@@ -108,18 +108,21 @@ public class PersonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View view) {
                     boolean checked = !selected.contains(person);
                     if (checked) {
+                        pHolder.checkIcon.setVisibility(View.VISIBLE);
                         pHolder.imgView.setAlpha(0.5f);
                         selected.add(person);
                     } else {
+                        pHolder.checkIcon.setVisibility(View.INVISIBLE);
                         pHolder.imgView.setAlpha(1f);
                         selected.remove(person);
                     }
-                    if(checkListener != null) {
+                    if (checkListener != null) {
                         checkListener.onPersonCheck(person, checked, selected);
                     }
                 }
             });
             pHolder.imgView.setAlpha(selected.contains(person) ? 0.5f : 1f);
+            pHolder.checkIcon.setVisibility(selected.contains(person) ? View.VISIBLE : View.INVISIBLE);
         } else {
             ((LabelViewHolder)holder).bindItem(item.data.toString());
         }
