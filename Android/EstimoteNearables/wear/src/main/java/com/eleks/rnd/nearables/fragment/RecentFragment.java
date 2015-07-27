@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.wearable.view.WearableListView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +64,18 @@ public class RecentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_recent, container, false);
 
+
         mAdapter = new PeopleListAdapter(getActivity());
         mListView = (WearableListView) rootView.findViewById(R.id.listView);
         mListView.setGreedyTouchMode(true);
         mListView.setAdapter(mAdapter);
+
+        mListView.setOverScrollListener(new WearableListView.OnOverScrollListener() {
+            @Override
+            public void onOverScroll() {
+                new RecentAsync().execute();
+            }
+        });
 
         return rootView;
     }

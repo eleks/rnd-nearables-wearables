@@ -16,6 +16,12 @@ public class Nearable implements Serializable {
 	static {
 		uuids.put("b4aaa62e03d1dcef", "Dog");
 		uuids.put("e59b0d69306fab9f", "Chair");
+		uuids.put("eeb9df1ba9158f63", "Bike");
+		uuids.put("f65bb59e07eb23ab", "Door");
+		uuids.put("0832bc783a80b289", "Shoe");
+		uuids.put("b46800606cb58677", "Bag");
+		uuids.put("fe38f1d872498ad0", "Fridge");
+		uuids.put("0e2c0ec93085ce6a", "Bed");		
 	}
 
 	@Id
