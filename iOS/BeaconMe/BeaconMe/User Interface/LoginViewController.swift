@@ -142,6 +142,9 @@ extension LoginViewController
     {
         self.navigationController?.navigationBarHidden = true
         
+        self.usernameTextField.text = nil
+        self.passwordTextField.text = nil
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }

@@ -106,7 +106,7 @@ extension PeopleViewController {
     
     func updateInsets()
     {
-        let top: CGFloat = self.isSearchModeEnabled ? self.headerHeight() : 0
+        let top: CGFloat = self.isSearchModeEnabled ? self.headerHeight() - 10 : 0
         self.tableView.contentInset = UIEdgeInsetsMake(top, 0, self.bottomInset()  , 0)
         self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0, 0, 0)
         self.tableView.setContentOffset(CGPointMake(0, -top), animated: false)

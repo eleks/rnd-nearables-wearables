@@ -46,13 +46,6 @@ class SynchronizationService {
     
     class func getRecentTrackedData(completion: (([RecentItem]?) -> (Void)))
     {
-//        var r: [RecentItem] = []
-//        r.append((employeeName: "Bogdan Shubravyi ", location: "Home", employeeId: "1541", timestamp: 24309))
-//        r.append((employeeName: "Bogdan Melnychuk", location: "Work", employeeId: "808", timestamp: 18809))
-//        r.append((employeeName: "Oksana Hasyuk", location: "Home", employeeId: "1576", timestamp: 21809))
-//        completion(r)
-//        return
-        
         let token = AuthentificationManager.instance.token
         let username = AuthentificationManager.instance.username
         
