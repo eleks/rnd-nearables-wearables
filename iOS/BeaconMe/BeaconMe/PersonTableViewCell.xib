@@ -23,7 +23,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xuv-83-eJO">
                         <rect key="frame" x="406" y="23" width="42" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="60" id="9kn-GN-FuU"/>
+                            <constraint firstAttribute="width" constant="72" id="9kn-GN-FuU"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -51,15 +51,16 @@
                     <constraint firstItem="fRR-iJ-Znb" firstAttribute="leading" secondItem="DX3-as-L5Z" secondAttribute="leadingMargin" id="MMX-Da-9e9"/>
                     <constraint firstItem="Xuv-83-eJO" firstAttribute="centerY" secondItem="DX3-as-L5Z" secondAttribute="centerY" id="MoY-eH-K6h"/>
                     <constraint firstItem="fRR-iJ-Znb" firstAttribute="top" secondItem="DX3-as-L5Z" secondAttribute="topMargin" id="PiA-Yo-KlD"/>
-                    <constraint firstAttribute="centerY" secondItem="zPy-44-UWR" secondAttribute="centerY" constant="-9" id="U4F-Fb-XB8"/>
+                    <constraint firstAttribute="centerY" secondItem="zPy-44-UWR" secondAttribute="centerY" constant="-10" id="U4F-Fb-XB8"/>
                     <constraint firstItem="Xuv-83-eJO" firstAttribute="trailing" secondItem="DX3-as-L5Z" secondAttribute="trailingMargin" id="nUF-R4-GVo"/>
-                    <constraint firstAttribute="centerY" secondItem="Wr1-3k-zQf" secondAttribute="centerY" constant="9" id="tsZ-h3-kmH"/>
+                    <constraint firstAttribute="centerY" secondItem="Wr1-3k-zQf" secondAttribute="centerY" constant="10" id="tsZ-h3-kmH"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="photoImageView" destination="fRR-iJ-Znb" id="qE1-jk-usW"/>
                 <outlet property="placeLabel" destination="zPy-44-UWR" id="Npl-k2-2RD"/>
                 <outlet property="timeLabel" destination="Xuv-83-eJO" id="sBO-6f-Gzp"/>
+                <outlet property="timeWidth" destination="9kn-GN-FuU" id="pyK-9o-UHv"/>
                 <outlet property="titleLabel" destination="Wr1-3k-zQf" id="54B-bK-Jto"/>
             </connections>
             <point key="canvasLocation" x="608" y="212"/>

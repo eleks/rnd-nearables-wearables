@@ -33,8 +33,12 @@ class DataFormatter {
             result += "\(diffInHours)h"
         }
         
-        if diffInMinutes > 0 {
-            result += " \(diffInMinutes)m"
+        if diffInMinutes > 0
+        {
+            if count(result) > 0 {
+                result += " "
+            }
+            result += "\(diffInMinutes)m"
         }
         
         return result + " ago"

@@ -15,8 +15,18 @@ class PersonTableViewCell: SWTableViewCell {
     @IBOutlet weak var placeLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     
+    @IBOutlet weak var timeWidth: NSLayoutConstraint!
     static let cellID = "PersonTableViewCellIdentifier"
-    static let defaultHeight : CGFloat = 60
+    class func defaultHeight() -> CGFloat
+    {
+        if DeviceType.IS_IPHONE_6 {
+            return 64
+        }
+        else if DeviceType.IS_IPHONE_6P {
+            return 68
+        }
+        return 60
+    }
     
     override func awakeFromNib()
     {
@@ -31,6 +41,13 @@ class PersonTableViewCell: SWTableViewCell {
         
         self.placeLabel.textColor = Style.tintColor()
         self.timeLabel.textColor = Style.highlightedColor()
+        
+        if DeviceType.IS_IPHONE_6 {
+            self.timeWidth.constant = 84
+        }
+        else if DeviceType.IS_IPHONE_6P {
+            self.timeWidth.constant = 90
+        }
     }
 
     func configure(item: RecentItem, isHighlighted: Bool, delegate: SWTableViewCellDelegate?, isFavorite: Bool)
@@ -55,7 +72,7 @@ class PersonTableViewCell: SWTableViewCell {
             })
         }
         
-        self.setRightUtilityButtons(self.createRightButtonsForFavoriteMode(isFavorite), withButtonWidth: isFavorite ? 96 : 80)
+        self.setRightUtilityButtons(self.createRightButtonsForFavoriteMode(isFavorite), withButtonWidth: isFavorite ? 90 : 78)
     }
     
     func createRightButtonsForFavoriteMode(isFavorite: Bool) -> [UIButton]
@@ -65,6 +82,7 @@ class PersonTableViewCell: SWTableViewCell {
         var button = UIButton.buttonWithType(.Custom) as! UIButton
         button.backgroundColor = Style.tintColor()
         button.setTitle(isFavorite ? "Unfavorite" : "Favorite", forState: .Normal)
+        button.titleLabel?.font = Style.nameTextFont()
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         
