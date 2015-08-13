@@ -18,10 +18,12 @@ class DataFormatter {
         
         let date = NSDate(timeIntervalSince1970: NSTimeInterval(timestamp!))
         let now  = NSDate()
+        
+        let justNow = "Just Now"
 
         let diffInSeconds = abs(date.timeIntervalSinceNow)
         if diffInSeconds <= 60 || (date.compare(now) == NSComparisonResult.OrderedDescending) {
-            return "Just Now"
+            return justNow
         }
         
         var result = ""
@@ -39,6 +41,10 @@ class DataFormatter {
                 result += " "
             }
             result += "\(diffInMinutes)m"
+        }
+        
+        if count(result) == 0 {
+            return justNow
         }
         
         return result + " ago"
